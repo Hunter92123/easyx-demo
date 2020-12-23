@@ -57,7 +57,7 @@ int getNextRandomInteger(int min, int max) {
 
 void drawSth() {
 	float radiusBig = 400;//外轮半径
-	initgraph(radiusBig * 2, radiusBig * 2, SHOWCONSOLE | NOMINIMIZE);	// 创建绘图窗口，大小为 640x480 像素
+	initgraph(radiusBig * 2, radiusBig * 2);	// 创建绘图窗口，大小为 640x480 像素
 
 	for (int t = 0; t < 5; t++) {
 		//float radiusSmall = 105;//内轮半径
