@@ -23,7 +23,7 @@
     <ProjectGuid>{C43732FF-4FD7-4AF6-81C1-9C5C6AE2827A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>打字母游戏</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
