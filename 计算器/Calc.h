@@ -9,6 +9,8 @@ using namespace std;
 
 // 宏定义
 #define _CRT_SECURE_NO_WARNINGS
+#define WIDTH		420													// 窗口宽度
+#define HEIGHT		600													// 窗口高度
 #define BKCOLOR		RGB(LIGHTRED, LIGHTGREEN, 0)						// 背景颜色
 #define WNDCOLOR    RGB(238, 224, 229)									// 窗口颜色
 #define COLOR1		RGB(244, 36, 198)									// 按钮颜色 1

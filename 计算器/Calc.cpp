@@ -9,7 +9,7 @@ GButton::GButton()
 	String = "0";
 }
 
-void GButton::GButtonX(int x1, int y1, int cx1, int cy1, char *str, COLORREF colors)
+void GButton::GButtonX(int x1, int y1, int cx1, int cy1, char* str, COLORREF colors)
 {
 	x = x1;
 	y = y1;
@@ -109,7 +109,7 @@ void Retangle(int x1, int y1, int x2, int y2, COLORREF color)
 
 GCount::GCount()
 {
-	int x1 = 20; 
+	int x1 = 20;
 	int y1 = 100;
 	xPre = 0;
 	yPre = 0;
@@ -172,11 +172,10 @@ void GCount::Run()
 
 void GCount::CreateCount()
 {
-	initgraph(420, 620, 1);
+	initgraph(WIDTH, HEIGHT);
 	setbkcolor(BKCOLOR);
 	cleardevice();
-	Retangle(0, 0, 420, 620, WNDCOLOR);
-	outtextxy(130, 600, _T("Designed by Redman"));
+	Retangle(0, 0, WIDTH, HEIGHT, WNDCOLOR);
 	setcolor(COLOR2);
 	line(10, 90, 410, 90);
 	line(10, 90, 10, 580);
@@ -273,34 +272,40 @@ void GCount::OnMouseMoveButton(int x, int y)
 void GCount::OnLeftButtonDown(int x, int y)
 {
 	bool isLocate = OnLocate(x, y);
-	printf("%d\n", isLocate);
+	//printf("%d\n", isLocate);
 	if (isLocate) {
 		// 按钮上第一个字母
 		switch (button[yNow][xNow].ReturnButtonString()[0]) {
-		// 清楚编辑器
+			// 清楚编辑器
 		case 'C':
 			String = "";
 			OnSetData();
 			break;
-		// 这里有两个操作符使用了 '+' 号, 一个是正负号, 一个是真的加号
+			// 这里有两个操作符使用了 '+' 号, 一个是正负号, 一个是真的加号
 		case '+':
-			
-			// 这里加上或操作可使操作连续进行
-			if (flag == false || oper == '=')
-			{
+			if (button[yNow][xNow].ReturnButtonString()[1] == '/') {
+				if (String[0] != '-') {
+					String = '-' + String;
+				}
+				else {
+					String = String.substr(1, String.length());
+				}
+				left = String;
+			}
+			// 这里加上或操作可使操作连续进行, 如果第一个字符为-，也可以进行+操作
+			else if (!flag || oper == '=' || String[0] == '-') {
 				flag = true;
 				oper = '+';
 				left = String;
 				String += button[yNow][xNow].ReturnButtonString();
 			}
-			
 			break;
 		case '-':
 		case '/':
 		case '%':
 		case '*':
 			// 加上或操作的原因同上
-			if (flag == false || oper == '=')
+			if (!flag || oper == '=')
 			{
 				flag = true;
 				oper = button[yNow][xNow].ReturnButtonString()[0];
@@ -323,12 +328,14 @@ void GCount::OnLeftButtonDown(int x, int y)
 				OnSqu();
 			}
 			break;
+		// 指数计算
 		case 'e':
 			if (!flag || oper == '=') {
 				flag = true;
 				OnExp();
 			}
 			break;
+		// 求倒数
 		case 'r':
 			if (!flag || oper == '=') {
 				flag = true;
@@ -345,7 +352,33 @@ void GCount::OnLeftButtonDown(int x, int y)
 			}
 			break;
 		}
+		// 小数点
+		case '.':
+			// 检查现在的String有没有小数点
+			if (count(String.begin(), String.end(), '.') == 0) {
+				String += '.';
+			}
+			else if (count(String.begin(), String.end(), '.') == 1) {
+				if (left != "" && oper != '0') {
+					String += '.';
+				}
+			}
+			else if (flag == true && oper == '=') {
+				String = "";
+				flag = false;
+			}
 
+			break;
+		// 点击0的情况
+		case '0':
+			// 如果第一个字符是0，并且总长度为1
+			if (String.length() > 1 && (String[0] != '0' || String[1] != 0)) {
+				String += '0';
+			}
+			else if (String.length() == 0) {
+				String += '0';
+			}
+			break;
 		default:
 			if (flag && oper == '=') {
 				String = "";
@@ -406,7 +439,7 @@ void GCount::OnCompute()
 			OnMod();			// 取模操作
 			break;
 		default:
-			
+
 			break;
 		}
 		oper = '=';
@@ -528,7 +561,7 @@ void GCount::OnRec()
 	// 设置左操作数
 	left = String;
 	number1 = atof(left.c_str());
-	if (number2 != 0){
+	if (number1 != 0) {
 		number1 = 1 / number1;
 
 		// 更新数据
@@ -538,7 +571,7 @@ void GCount::OnRec()
 	else {
 		String = _T("错误! 0不能求倒数");
 	}
-	
+
 
 	OnSetData();
 }
